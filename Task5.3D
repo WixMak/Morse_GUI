@@ -1,0 +1,174 @@
+from tkinter import *
+import tkinter.font
+from gpiozero import LED
+import RPi.GPIO
+import time
+RPi.GPIO.setmode(RPi.GPIO.BCM)
+
+red = LED(27)
+green = LED(17)
+blue = LED(4)
+
+win = Tk()
+win.title("Morse Code")
+myFont = tkinter.font.Font(family = 'Hevatica',size = 12, weight = "bold")
+
+def shortSignal():
+    red.on()
+    time.sleep(0.25)
+    red.off()
+    time.sleep(0.25)
+    
+    
+def longSignal():
+    red.on()
+    time.sleep(1)
+    red.off()
+    time.sleep(0.25)
+
+def morseCode(char):
+    if char in ("A", "a"):
+        shortSignal()
+        longSignal()
+    elif char in ("B", "b"):
+        longSignal()
+        shortSignal()
+        shortSignal()
+        shortSignal()
+    elif char in ("C", "c"):
+        longSignal()
+        shortSignal()
+        longSignal()
+        shortSignal()
+    elif char in ("D", "d"):
+        longSignal()
+        shortSignal()
+        shortSignal()
+    elif char in ("E", "e"):
+        shortSignal()
+    elif char in ("F", "f"):
+        shortSignal()
+        shortSignal()
+        longSignal()
+        shortSignal()
+    elif char in ("G", "g"):
+        longSignal()
+        longSignal()
+        shortSignal()
+    elif char in ("H", "h"):
+        shortSignal()
+        shortSignal()
+        shortSignal()
+        shortSignal()
+    elif char in ("I", "i"):
+        shortSignal()
+        shortSignal()
+    elif char in ("J", "j"):
+        shortSignal()
+        longSignal()
+        longSignal()
+        longSignal()
+    elif char in ("K", "k"):
+        longSignal()
+        shortSignal()
+        longSignal()
+    elif char in ("L", "l"):
+        shortSignal()
+        longSignal()
+        shortSignal()
+        shortSignal()
+    elif char in ("M", "m"):
+        longSignal()
+        longSignal()
+    elif char in ("N", "n"):
+        longSignal()
+        shortSignal()
+    elif char in ("O", "o"):
+        longSignal()
+        longSignal()
+        longSignal()
+    elif char in ("P", "p"):
+        shortSignal()
+        longSignal()
+        longSignal()
+        shortSignal()
+    elif char in ("Q", "q"):
+        longSignal()
+        longSignal()
+        shortSignal()
+        longSignal()
+    elif char in ("R", "r"):
+        shortSignal()
+        longSignal()
+        shortSignal()
+    elif char in ("S", "s"):
+        shortSignal()
+        shortSignal()
+        shortSignal()
+    elif char in ("T", "t"):
+        longSignal()
+    elif char in ("U", "u"):
+        shortSignal()
+        shortSignal()
+        longSignal()
+    elif char in ("V", "v"):
+        shortSignal()
+        shortSignal()
+        shortSignal()
+        longSignal()
+    elif char in ("W", "w"):
+        shortSignal()
+        longSignal()
+        longSignal()
+    elif char in ("X", "x"):
+        longSignal()
+        shortSignal()
+        shortSignal()
+        longSignal()
+    elif char in ("Y", "y"):
+        longSignal()
+        shortSignal()
+        longSignal()
+        longSignal()
+    elif char in ("Z", "z"):
+        longSignal()
+        longSignal()
+        shortSignal()
+        shortSignal()
+    else:
+        red.off()
+      
+        
+
+def blink():
+    string = textinput.get("1.0","end")
+    blue.on()
+    time.sleep(0.25)
+    blue.off()
+    time.sleep(0.25)
+    for x in string:
+        morseCode(x)
+    green.on()
+    time.sleep(0.25)
+    green.off()
+    time.sleep(0.25)
+    submitButton['state'] = DISABLED
+    
+def check():
+    string = textinput.get("1.0","end")
+    if len(string) - 1 <= 12 :
+        submitButton['state'] = NORMAL    
+    
+label = Label(win, text='Type in your string')
+label.pack()
+
+textinput = Text(win, width = 12, height = 1, wrap = 'char')
+textinput.pack()
+
+checkButton = Button(win, text ='check', font = myFont, command = check)
+checkButton.pack(side = RIGHT)
+
+submitButton = Button(win, text ='submit', font = myFont, command = blink, state = DISABLED)
+submitButton.pack(side = LEFT)
+
+win.mainloop()
